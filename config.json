@@ -1,6 +1,7 @@
 {
-  "line_length": 6,
-  "line_width": 2,
-  "line_offset": 0,
-  "crosshair_color": "(0, 0, 255, 255)"
+  "line_length": 3,
+  "line_width": 1,
+  "line_offset": 2,
+  "crosshair_color": "(0, 255, 0, 255)",
+  "set_pixel_fps": 400
 }

@@ -1,17 +1,21 @@
 from PIL import Image
 import tkinter as tk
-import json
 import sys
+import win32gui
+from win32api import GetSystemMetrics
+import time
+import struct
 
 class Crosshair:
 
-    def __init__(self, crosshair_color="(0, 0, 255, 255)", settings=(2, 8, 4)):
+    def __init__(self, crosshair_color="(0, 0, 255, 255)", settings=(2, 8, 4), fps=300):
         self.crosshair_color = eval(crosshair_color)
         self.filename = "crosshair.png"
         self.transparent_color = (255, 255, 255, 0)
         self.line_width = settings[0]
         self.line_length = settings[1]
         self.line_offset = settings[2]
+        self.fps = fps
 
         self.width = (self.line_length * 2) + self.line_width + (self.line_offset * 2)
         self.matrix = []
@@ -57,7 +61,23 @@ class Crosshair:
                     sys.stdout.write("0")
             sys.stdout.write("\n")
 
-    def display_crosshair(self):
+    def draw_crosshair_pixels(self):
+        sleep_time = t = 1 / self.fps
+        color = self.crosshair_color[:3]
+        color_int = int("%02x%02x%02x" % (color[2], color[1], color[0]), 16)
+        w = GetSystemMetrics(0) / 2 - self.width / 2 + 1
+        h = GetSystemMetrics(1) / 2 - self.width / 2 + 1
+        dc = win32gui.GetDC(0)
+
+        while True:
+            for y in range(self.width):
+                for x in range(self.width):
+                    if self.matrix[y][x] != self.transparent_color:
+                        win32gui.SetPixel(dc, int(x + w), int(y + h), color_int)
+
+            time.sleep(sleep_time)
+
+    def display_crosshair_window(self):
 
         def center(toplevel):
             toplevel.update_idletasks()
@@ -77,30 +97,11 @@ class Crosshair:
         center(root)
         root.image = tk.PhotoImage(file=self.filename)
         label = tk.Label(root, image=root.image, bg='white')
+        label.pack()
         root.overrideredirect(True)
         root.geometry("{}x{}".format(self.width, self.width))
         root.lift()
         root.wm_attributes("-topmost", True)
         root.wm_attributes("-disabled", True)
         root.wm_attributes("-transparentcolor", "white")
-        label.pack()
-        w.grab_set()
-        label.configure(state="disable")
         label.mainloop()
-
-def main():
-    with open("config.json", "r") as f:
-        config = json.loads(f.read())
-
-    try:
-        c = Crosshair(config["crosshair_color"], (config["line_width"], config["line_length"], config["line_offset"]))
-    except Exception as e:
-        print("Missing {}. Using default settings.".format(e))
-        c = Crosshair()
-
-    c.create_crosshair_matrix()
-    c.save_crosshair_png()
-    c.display_crosshair()
-
-if __name__ == "__main__":
-    main()
