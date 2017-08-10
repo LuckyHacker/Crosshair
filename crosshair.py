@@ -61,6 +61,7 @@ class Crosshair:
             sys.stdout.write("\n")
 
     def draw_crosshair_pixels(self):
+        coords = []
         sleep_time = t = 1 / self.fps
         color = self.crosshair_color[:3]
         color_int = int("%02x%02x%02x" % (color[2], color[1], color[0]), 16)
@@ -68,12 +69,13 @@ class Crosshair:
         h = GetSystemMetrics(1) / 2 - self.width / 2 + 1
         dc = win32gui.GetDC(0)
 
-        while True:
-            for y in range(self.width):
-                for x in range(self.width):
-                    if self.matrix[y][x] != self.transparent_color:
-                        win32gui.SetPixel(dc, int(x + w), int(y + h), color_int)
+        for y in range(self.width):
+            for x in range(self.width):
+                if self.matrix[y][x] != self.transparent_color:
+                    coords.append((int(x + w), int(y + h)))
 
+        while True:
+            list(map(lambda x: win32gui.SetPixel(dc, x[0], x[1], color_int), coords))
             time.sleep(sleep_time)
 
     def display_crosshair_window(self):
