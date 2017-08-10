@@ -4,6 +4,6 @@ Simple customizable crosshair for every game.
 ## Settings explained (config.json)
 * **length**: line length (pixels)
 * **thickness**: line thickness (pixels)
-* **offset**: the offset from center off screen (pixels)
+* **offset**: the offset from center of screen (pixels)
 * **color**: crosshair color (RGBA)
 * **set_pixel_fps**: define how many times to render crosshair in second
