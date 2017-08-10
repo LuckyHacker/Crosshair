@@ -34,7 +34,7 @@ def update_config(key, value):
 
 
     with open("config.json", "w") as f:
-        f.write(json.dumps(config))
+        f.write(json.dumps(config, indent=4, sort_keys=True))
 
 def main():
     c = reload_crosshair()
