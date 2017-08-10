@@ -6,7 +6,7 @@ def main():
         config = json.loads(f.read())
 
     try:
-        c = Crosshair(config["crosshair_color"], (config["line_width"], config["line_length"], config["line_offset"]), config["set_pixel_fps"])
+        c = Crosshair(config["color"], (config["thickness"], config["length"], config["offset"]), config["set_pixel_fps"])
     except Exception as e:
         print("Missing {}. Using default settings.".format(e))
         c = Crosshair()

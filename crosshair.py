@@ -15,6 +15,7 @@ class Crosshair:
         self.line_length = settings[1]
         self.line_offset = settings[2]
         self.fps = fps
+        self.allow_draw = True
 
         self.width = (self.line_length * 2) + self.line_width + (self.line_offset * 2)
         self.matrix = []
@@ -74,7 +75,7 @@ class Crosshair:
                 if self.matrix[y][x] != self.transparent_color:
                     coords.append((int(x + w), int(y + h)))
 
-        while True:
+        while self.allow_draw:
             list(map(lambda x: win32gui.SetPixel(dc, x[0], x[1], color_int), coords))
             time.sleep(sleep_time)
 
