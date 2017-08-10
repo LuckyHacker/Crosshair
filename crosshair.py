@@ -4,7 +4,6 @@ import sys
 import win32gui
 from win32api import GetSystemMetrics
 import time
-import struct
 
 class Crosshair:
 
