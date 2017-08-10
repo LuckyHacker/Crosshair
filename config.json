@@ -1,7 +1,1 @@
-{
-  "length": 3,
-  "thickness": 1,
-  "offset": 2,
-  "color": "(0, 255, 0, 255)",
-  "set_pixel_fps": 400
-}
+{"offset": 2, "length": 3, "color": "(0,255,0,255)", "thickness": 1, "set_pixel_fps": 500}
