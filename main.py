@@ -10,8 +10,8 @@ def reload_crosshair(c = None):
         with open("config.json", "r") as f:
             config = json.loads(f.read())
         c = Crosshair(config["color"], (config["thickness"], config["length"], config["offset"], config["outline"]), config["set_pixel_fps"])
-    except Exception as e:
-        print("Config error. Using default config.".format(e))
+    except:
+        print("Config error. Using default config.")
         c = Crosshair()
 
     c.create_crosshair_matrix()
