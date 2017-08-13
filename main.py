@@ -15,7 +15,6 @@ def reload_crosshair(c = None):
         c = Crosshair()
 
     c.create_crosshair_matrix()
-    c.save_crosshair_png()
     c_thread = threading.Thread(target=c.draw_crosshair_pixels)
     c_thread.daemon = True
     c_thread.start()
