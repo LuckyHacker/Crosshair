@@ -3,5 +3,6 @@
     "length": 3,
     "offset": 2,
     "set_pixel_fps": 500,
-    "thickness": 1
+    "thickness": 1,
+    "outline": 1
 }

@@ -6,13 +6,12 @@ def reload_crosshair(c = None):
     if c:
         c.allow_draw = False
 
-    with open("config.json", "r") as f:
-        config = json.loads(f.read())
-
     try:
-        c = Crosshair(config["color"], (config["thickness"], config["length"], config["offset"]), config["set_pixel_fps"])
+        with open("config.json", "r") as f:
+            config = json.loads(f.read())
+        c = Crosshair(config["color"], (config["thickness"], config["length"], config["offset"], config["outline"]), config["set_pixel_fps"])
     except Exception as e:
-        print("Missing {}. Using default settings.".format(e))
+        print("Config error. Using default config.".format(e))
         c = Crosshair()
 
     c.create_crosshair_matrix()
@@ -24,8 +23,20 @@ def reload_crosshair(c = None):
 
 
 def update_config(key, value):
-    with open("config.json", "r") as f:
-        config = json.loads(f.read())
+    config = {
+        "color": "(0,255,0,255)",
+        "length": 3,
+        "offset": 2,
+        "set_pixel_fps": 500,
+        "thickness": 1,
+        "outline": 1
+    }
+    try:
+        with open("config.json", "r") as f:
+            config = json.loads(f.read())
+    except:
+        with open("config.json", "w") as f:
+            f.write("")
 
     if key == "color":
         config[key] = value
@@ -38,7 +49,7 @@ def update_config(key, value):
 
 def main():
     c = reload_crosshair()
-    commands = ["thickness", "length", "offset", "color", "set_pixel_fps"]
+    commands = ["thickness", "length", "offset", "color", "set_pixel_fps", "outline"]
     command = ""
     while command != "exit":
         command = input("crosshair> ")
@@ -49,7 +60,11 @@ def main():
                 update_config(key, value)
         except:
             if command not in ("exit", ""):
-                print("Invalid command")
+                print("Invalid command\n")
+                print("Commands :")
+                for command in commands:
+                    print(command + " <value>")
+                print("\n")
 
         c = reload_crosshair(c)
 
